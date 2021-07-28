@@ -1,22 +1,22 @@
 # Book Directory
-> This is use to create books
+> This is simple Api for books
 
 ## create users
 > This is use to create user and store in the database
 
-- **ENDPOINT:** https://secret-woodland-98197.herokuapp.com/
+- **ENDPOINT:** https://secret-woodland-98197.herokuapp.com/users
 
 - **METHOD : ** `POST`
 - **PARAMETERS :**
 ```JSON
 
-    "firstName": "chamber",
-    "lastName": "ezigbo",
-    "email": "testing@gmail.com",
-    "password": "testing",
-    "gender": "male"
+    "firstName": String,
+    "lastName": String,
+    "email": String,
+    "password": String,
+    "gender": String
 ```
-- response
+- Response
 ```JSON
         "user": {
         "_id": "60fffd6b6d8855001564c518",
@@ -36,5 +36,33 @@
         "__v": 1
     },
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGZmZmQ2YjZkODg1NTAwMTU2NGM1MTgiLCJpYXQiOjE2MjczODkyOTF9.HLgLcPRyJNyV2VYAPVHTIpP2hB5mZDiEvVIzcDs9yTQ"
+
+```
+
+## login user 
+> Here you have to login 
+
+**ENDPOINT:** https://secret-woodland-98197.herokuapp.com/users/login
+
+**METHOD:** `POST`
+**PARAMETER:**
+```JSON 
+
+    "email": String,
+    "password": String
+
+
+```
+Response
+```JSON 
+
+    "user": {
+        "_id": "60fffd6b6d8855001564c518",
+        "firstName": "chamber",
+        "lastName": "ezigbo",
+        "email": "testing@gmail.com",
+        "password": "$2b$08$U6E42Ir7SIdTHVftHDJ16eqm5u09WOy27RCNfrKh/BNcf/lq6z44.",
+        "gender": "male",
+    }
 
 ```

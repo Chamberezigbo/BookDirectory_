@@ -17,13 +17,11 @@ const router = new express.Router();
 //        }
 // })
 
-router.post("/users", async (request, response) => {
-
+router.post("/users", async (request, response) => { 
 
        try {
               let { firstName, lastName, email, password, gender } = request.body;
-              password = bcrypt.hashSync(request.body.password, 10);
-            
+              
               let existUser = await User.findOne({ email: request.body.email });
               if (existUser)
                 return response
@@ -37,6 +35,7 @@ router.post("/users", async (request, response) => {
                          firstName, lastName,email,password,gender
                   })
                   let userData =  await newUser.save
+                  await userData.generateAuthToken()
                   return response.status(200).json({success:true, responseMessage:userData}) 
        } catch (error) {
               return response.status(422).json({success:false , responseMessage:`Failed to register user due to ${error}`})
@@ -70,7 +69,7 @@ router.post("/users/logout", auth, async (req, res) => {
   }
 });
 
-router.post("/users/logoutall", auth, async (req, res) => {
+router.post("/users/logout-all", auth, async (req, res) => {
   try {
     req.user.tokens = [];
     await req.user.save();

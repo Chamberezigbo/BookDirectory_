@@ -23,19 +23,6 @@ router.post("/books", auth, async (req, res) => {
   }
 });
 
-// router.get('/books/:id', auth, async (req,res) => {
-//        const bookId = req.params.id
-
-//        try {
-//               const book = await Books.findOne({ bookId, owner: req.user._id })
-//               if (!book)res.status(404).json({ success: true, resMassage: 'book not found'})
-//               res.status(200).json({ success: true, resMassage: book})
-//        } catch (e) {
-//               res.status(500).send()
-
-//        }
-// })
-
 router.get("/books/:id", auth, async (request, response) => {
   try {
     const bookId = request.params.id;
