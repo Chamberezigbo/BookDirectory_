@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema({
               lowercase: true,
               validator(value) {
                      if (!validator.isEmail(value)) {
-                            throw new Error('Email is invalide')
+                            throw new Error('Email is invalid')
                      }
               }
        },
@@ -43,13 +43,7 @@ const userSchema = new mongoose.Schema({
               type: String,
               required: true,
               trim: true
-       },
-       tokens: [{
-              token: {
-                     type: String,
-                     required: true
-              }
-       }]
+       }
 
 }, {
        timestamps: true
@@ -61,15 +55,6 @@ userSchema.virtual('book', {
        foreignField: 'owner'
 })
 
-userSchema.methods.generateAuthToken = async function () {
-       const user = this 
-       const token = jwt.sign({_id: user.id.toString()},process.env.JWT_SECRET)
-
-       user.tokens = user.tokens.concat({ token })
-       await user.save()
-
-       return token 
-}
 
 // to validate login //
 userSchema.statics.findByCredentials = async (email, password) => {
@@ -97,13 +82,11 @@ userSchema.pre('save', async function (next) {
 })
 
 // delete the object from the database //
-userSchema.method.toJSON = function () {
+userSchema.methods.toJSON = function () {
        const user = this 
        const userObject = user.toObject()
 
        delete userObject.password
-       delete userObject.token
-
        return userObject
 }
 

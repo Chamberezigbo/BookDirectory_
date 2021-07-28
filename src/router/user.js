@@ -1,8 +1,11 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
+const jwt = require('jsonwebtoken')
 const User = require("../models/user");
 const router = new express.Router();
+
+require('dotenv').config()
 
 // router.post('/users', async (req, res) => {
 //        const user = new User(req.body)
@@ -34,9 +37,14 @@ router.post("/users", async (request, response) => {
                   let newUser = new User({
                          firstName, lastName,email,password,gender
                   })
-                  let userData =  await newUser.save
-                  await userData.generateAuthToken()
-                  return response.status(200).json({success:true, responseMessage:userData}) 
+                  let userData =  await newUser.save()
+                  userData = userData.toJSON()
+                  const payLoad = {
+                    userId: userData._id
+                  }
+                  
+                  userData.token = jwt.sign(payLoad ,process.env.JWT_SECRET)
+                  return response.status(200).json({success:true, responseMessage: userData}) 
        } catch (error) {
               return response.status(422).json({success:false , responseMessage:`Failed to register user due to ${error}`})
        }
