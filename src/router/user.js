@@ -55,9 +55,9 @@ router.post("/users/login", async (req, res) => {
       userId: user._id,
     };
 
-    user.token = jwt.sign(payLoad, process.env.JWT_SECRET);
+    token = jwt.sign(payLoad, process.env.JWT_SECRET);
     return res.status(200).json({
-      success:true , responseMessage: user
+      success:true , responseMessage: user ,token
     })
   } catch (e) {
     res.status(400).send();
