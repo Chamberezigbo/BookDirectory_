@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const { schema } = require('./user')
 
 const bookSchema = new mongoose.Schema({
        title:{
@@ -14,11 +15,11 @@ const bookSchema = new mongoose.Schema({
        summary:{
               type: String
        },
-       descrption:{
+       description:{
               type: String,
               trim:true,
        },
-       bookcover:{
+       bookCover:{
               type: Buffer
        },
        published:{
@@ -41,6 +42,10 @@ const bookSchema = new mongoose.Schema({
 }, {
        timestamps:true
 })
+
+bookSchema.methods.confirmBookCover = (error, req, res, next) => {
+       res.status(400).send({ error: error.message })
+}
 
 const Books = mongoose.model('Books', bookSchema)
 

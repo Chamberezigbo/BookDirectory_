@@ -1,4 +1,6 @@
 const express = require("express");
+const multer = require('multer')
+const sharp = require('sharp')
 
 const Books = require("../models/book");
 const auth = require("../middleware/auth");
@@ -6,12 +8,23 @@ const { request, response } = require("express");
 
 const router = new express.Router();
 
+const upload = multer({
+  limits: {
+    fileSize: 2000000
+  },
+  fileFilter(req,file,cb) {
+    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      return cb(new Error('Please upload an image'))
+    }
+    cb(undefined, true)
+  }
+})
+
 router.post("/books", auth, async (req, res) => {
   const book = new Books({
     ...req.body,
     owner: req.user._id,
   });
-
   try {
     await book.save();
     res.status(201).json({
@@ -37,7 +50,7 @@ router.get("/books/:id", auth, async (request, response) => {
   }
 });
 
-router.get("/books-title-author", auth, async (request, response) => {
+router.get("/books-title-author", async (request, response) => {
   try {
     let { title, author } = request.body;
     let searchBookByTitleAuthor = await Books.find({$or:[{ title:title},{ author:author }] });
@@ -77,6 +90,7 @@ router.delete("/books/:id", auth, async (req, res) => {
   }
 });
 
+
 router.put("/books-update/:id", auth, async (request,response) => {
        try {
               const bookId = request.params.id
@@ -94,5 +108,7 @@ router.put("/books-update/:id", auth, async (request,response) => {
               return response.status(400).json({success:false ,responseMassage:`Failed to update book due to ${error}`})
        }
 })
+
+router.put('/books')
 
 module.exports = router;

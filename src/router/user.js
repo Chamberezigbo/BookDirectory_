@@ -1,54 +1,48 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const auth = require("../middleware/auth");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const router = new express.Router();
 
-require('dotenv').config()
+require("dotenv").config();
 
-// router.post('/users', async (req, res) => {
-//        const user = new User(req.body)
-//      if(await User.findOne({email:req.body.email}))res.status(400).send('email already existing')
+router.post("/users", async (request, response) => {
+  try {
+    let { firstName, lastName, email, password, gender } = request.body;
 
-//        try {
-//               await user.save()
-//               const token = await user.generateAuthToken()
-//               res.status(201).send({ user, token })
-//        } catch (e) {
-//               res.status(400).send(e.message)
-//        }
-// })
+    let existUser = await User.findOne({ email: request.body.email });
+    if (existUser)
+      return response.status(401).json({
+        success: false,
+        responseMessage: `User already exist with this email ${existUser.email}`,
+      });
 
-router.post("/users", async (request, response) => { 
+    let newUser = new User({
+      firstName,
+      lastName,
+      email,
+      password,
+      gender,
+    });
+    let userData = await newUser.save();
+    userData = userData.toJSON();
+    const payLoad = {
+      userId: userData._id,
+    };
 
-       try {
-              let { firstName, lastName, email, password, gender } = request.body;
-              
-              let existUser = await User.findOne({ email: request.body.email });
-              if (existUser)
-                return response
-                  .status(401)
-                  .json({
-                    success: false,
-                    responseMessage: `User already exist with this email ${existUser.email}`,
-                  });
-            
-                  let newUser = new User({
-                         firstName, lastName,email,password,gender
-                  })
-                  let userData =  await newUser.save()
-                  userData = userData.toJSON()
-                  const payLoad = {
-                    userId: userData._id
-                  }
-                  
-                  userData.token = jwt.sign(payLoad ,process.env.JWT_SECRET)
-                  return response.status(200).json({success:true, responseMessage: userData}) 
-       } catch (error) {
-              return response.status(422).json({success:false , responseMessage:`Failed to register user due to ${error}`})
-       }
- 
+    userData.token = jwt.sign(payLoad, process.env.JWT_SECRET);
+    return response
+      .status(210)
+      .json({ success: true, responseMessage: userData });
+  } catch (error) {
+    return response
+      .status(422)
+      .json({
+        success: false,
+        responseMessage: `Failed to register user due to ${error}`,
+      });
+  }
 });
 
 router.post("/users/login", async (req, res) => {
@@ -57,8 +51,14 @@ router.post("/users/login", async (req, res) => {
       req.body.email,
       req.body.password
     );
-    const token = await user.generateAuthToken();
-    res.send({ user, token });
+    const payLoad = {
+      userId: user._id,
+    };
+
+    user.token = jwt.sign(payLoad, process.env.JWT_SECRET);
+    return res.status(200).json({
+      success:true , responseMessage: user
+    })
   } catch (e) {
     res.status(400).send();
   }
