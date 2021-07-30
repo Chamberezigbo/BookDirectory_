@@ -20,7 +20,8 @@ const bookSchema = new mongoose.Schema({
               trim:true,
        },
        bookCover:{
-              type: Buffer
+              type: Buffer,
+              required:true
        },
        published:{
               type: String,

@@ -1,26 +1,19 @@
+const parser = require('../middleware/upload')
 const express = require("express");
 const multer = require('multer')
 const sharp = require('sharp')
+require("../middleware/cloudinary")
+const parser = require('../middleware/upload')
 
 const Books = require("../models/book");
 const auth = require("../middleware/auth");
 const { request, response } = require("express");
+const { parse } = require("dotenv");
 
 const router = new express.Router();
 
-const upload = multer({
-  limits: {
-    fileSize: 2000000
-  },
-  fileFilter(req,file,cb) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-      return cb(new Error('Please upload an image'))
-    }
-    cb(undefined, true)
-  }
-})
 
-router.post("/books", auth, async (req, res) => {
+router.post("/books", auth,  parser.single("bookCover"), async (req, res) => {
   const book = new Books({
     ...req.body,
     owner: req.user._id,
