@@ -54,6 +54,11 @@ userSchema.virtual('book', {
        localField: '_id',
        foreignField: 'owner'
 })
+userSchema.virtual('token', {
+       ref: 'token',
+       localField: '_id',
+       foreignField: 'userId'
+})
 
 
 // to validate login //

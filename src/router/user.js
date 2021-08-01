@@ -33,7 +33,7 @@ router.post("/users", async (request, response) => {
 
     userData.token = jwt.sign(payLoad, process.env.JWT_SECRET);
     return response
-      .status(210)
+      .status(201)
       .json({ success: true, responseMessage: userData });
   } catch (error) {
     return response
@@ -71,16 +71,6 @@ router.post("/users/logout", auth, async (req, res) => {
     });
     await req.user.save();
 
-    res.send();
-  } catch (e) {
-    res.status(500).send();
-  }
-});
-
-router.post("/users/logout-all", auth, async (req, res) => {
-  try {
-    req.user.tokens = [];
-    await req.user.save();
     res.send();
   } catch (e) {
     res.status(500).send();

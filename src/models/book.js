@@ -20,18 +20,21 @@ const bookSchema = new mongoose.Schema({
               trim:true,
        },
        bookCover:{
-              type: Buffer,
+              type: String,
               required:true
        },
        published:{
               type: String,
               required: true
        },
-       started:{
+       startedDate:{
               type: String,
               required: true
        },
-       ended:{
+       endedDate:{
+              type:String
+       },
+       howLong:{
               type:String
        },
        owner: {

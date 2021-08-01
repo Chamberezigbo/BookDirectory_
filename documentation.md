@@ -1,13 +1,17 @@
 # Book Directory
+
 > This is simple Api for books
 
 ## create users
+
 > This is use to create user and store in the database
 
-- **ENDPOINT:** https://secret-woodland-98197.herokuapp.com/users
+- **ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/users>
 
-- **METHOD : ** `POST`
+- **METHOD :** `POST`
+
 - **PARAMETERS :**
+
 ```JSON
 
     "firstName": String,
@@ -16,7 +20,9 @@
     "password": String,
     "gender": String
 ```
+
 - Response
+
 ```JSON
         "user": {
         "_id": "60fffd6b6d8855001564c518",
@@ -39,22 +45,50 @@
 
 ```
 
-## login user 
-> Here you have to login 
+## login user
 
-**ENDPOINT:** https://secret-woodland-98197.herokuapp.com/users/login
+> Here you have to login
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/users/login>
 
 **METHOD:** `POST`
 **PARAMETER:**
-```JSON 
+
+```JSON
 
     "email": String,
     "password": String
 
 
 ```
+
 Response
-```JSON 
+
+```JSON
+
+    "user": {
+        "_id": "60fffd6b6d8855001564c518",
+        "firstName": "chamber",
+        "lastName": "ezigbo",
+        "email": "testing@gmail.com",
+        "gender": "male",
+    }
+
+```
+
+## logout user
+
+> Here you have to logout user
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/users/logout>
+
+**METHOD:** `POST`
+**PARAMETER:**
+> you don't need a parameter
+
+Response
+
+```JSON
 
     "user": {
         "_id": "60fffd6b6d8855001564c518",
@@ -63,6 +97,171 @@ Response
         "email": "testing@gmail.com",
         "password": "$2b$08$U6E42Ir7SIdTHVftHDJ16eqm5u09WOy27RCNfrKh/BNcf/lq6z44.",
         "gender": "male",
+    }
+
+```
+
+## Edit user
+
+> Here you have to edit your user
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/users/me>
+
+**METHOD:** `POST`
+**PARAMETER:**
+
+```JSON
+
+    "firstName": String,
+    "lastName": String,
+    "email": String,
+    "password": String,
+    "gender": String
+
+
+
+```
+
+Response
+
+```JSON
+
+    "user": {
+        "_id": "60fffd6b6d8855001564c518",
+        "firstName": "chamber",
+        "lastName": "ezigbo",
+        "email": "testing@gmail.com",
+        "gender": "male",
+    }
+
+```
+
+## Thats all for user next will be router for books
+
+## Create book
+
+> this router create book for the particular user authenticated with it
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books>
+
+**METHOD:** `POST`
+**PARAMETER:**
+
+```JSON
+
+    "title": String,
+    "description": String,
+    "published": String,
+    "author": String,
+    "startedDate": String,
+    "endedDate": String,
+    "bookCover": file
+
+
+
+```
+
+Response
+
+```JSON
+
+    "book": {
+
+    }
+
+```
+
+## Get book by id
+
+> this route generate book by id
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books/:id>
+
+**METHOD:** `GET`
+**PARAMETER:**
+`None`
+
+
+Response
+
+```JSON
+
+    "book": {
+
+    }
+
+```
+
+## Edit book
+
+> this route helps you to edit a book by id
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books-update/:id>
+
+**METHOD:** `PUT`
+**PARAMETER:**
+
+```JSON
+
+    "endedDate": String,
+    "summary": String
+
+
+
+```
+
+Response
+
+```JSON
+
+    "book": {
+
+    }
+
+```
+
+## Delete book
+
+> this route helps you to delete a book by id
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books/:idbooks-update/:id>
+
+**METHOD:** `Delete`
+**PARAMETER:**
+`None`
+
+Response
+
+```JSON
+
+    "book": {
+
+    }
+```
+
+## Publics users router
+
+> this is for public route to generate book by title or author
+
+**ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books-title-author>
+
+**METHOD:** `Get`
+**PARAMETER:**
+
+```JSON
+
+    "title": String or
+    "author": String
+
+
+```
+
+Response
+
+```JSON
+
+    "book":{
+
     }
 
 ```

@@ -3,7 +3,7 @@ const express = require("express");
 const multer = require('multer')
 const sharp = require('sharp')
 require("../middleware/cloudinary")
-const parser = require('../middleware/upload')
+
 
 const Books = require("../models/book");
 const auth = require("../middleware/auth");
@@ -13,12 +13,27 @@ const { parse } = require("dotenv");
 const router = new express.Router();
 
 
-router.post("/books", auth,  parser.single("bookCover"), async (req, res) => {
+router.post("/books", auth,  parser().single("bookCover"), async (req, res) => {
+  let existBook = await Books.findOne({title: req.body.title })
+
+  if (existBook) {
+    return res.status(401).json({
+      success: false ,
+      resMassage: `sorry book title already existing`
+    })
+  }
+  
   const book = new Books({
-    ...req.body,
+    ...req.body, bookCover:req.file.path,
     owner: req.user._id,
   });
   try {
+
+    let sd = new Date(book.startedDate)
+    let ed = new Date(book.endedDate)
+    let red = sd.getTime() - ed.getTime()  
+    red = red /(1000*3600*24)
+    book.howLong = red
     await book.save();
     res.status(201).json({
       success: true,
@@ -85,21 +100,21 @@ router.delete("/books/:id", auth, async (req, res) => {
 
 
 router.put("/books-update/:id", auth, async (request,response) => {
-       try {
-              const bookId = request.params.id
-              let {ended , summary} = request.body
+  try {
+    const bookId = request.params.id
+    let {endedDate , summary} = request.body
 
-              let updateBook =  await Books.findById(bookId)
-              let sd = new Date(updateBook.started)
-              let ed = new Date(ended)
-              let red = sd.getTime() - ed.getTime()  
-              red = red /(1000*3600*24)
-              console.log(red)
-              let newUpdatedBook = await Books.findByIdAndUpdate(bookId , {ended:red , summary:summary} , {new:true})
-              return response.status(200).json({success:true, responseMassage:newUpdatedBook})
-       } catch (error) {
-              return response.status(400).json({success:false ,responseMassage:`Failed to update book due to ${error}`})
-       }
+    let updateBook =  await Books.findById(bookId)
+    let newEndedDate = endedDate
+    let sd = new Date(updateBook.startedDate)
+    let ed = new Date({newEndedDate})
+    let red = sd.getTime() - ed.getTime()  
+    red = red /(1000*3600*24)
+    let newUpdatedBook = await Books.findByIdAndUpdate(bookId , {endedDate:newEndedDate , summary:summary,HowLong: red } , {new:true})
+    return response.status(200).json({success:true, responseMassage:newUpdatedBook})
+} catch (error) {
+    return response.status(400).json({success:false ,responseMassage:`Failed to update book due to ${error}`})
+  }
 })
 
 router.put('/books')
