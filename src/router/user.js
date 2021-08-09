@@ -52,7 +52,8 @@ router.post("/users/login", async (req, res) => {
       req.body.password
     );
     const payLoad = {
-      userId: user._id,
+      userEmail: user.email,
+      userId: user._id.toString()
     };
 
     token = jwt.sign(payLoad, process.env.JWT_SECRET);
@@ -79,7 +80,7 @@ router.post("/users/logout", auth, async (req, res) => {
 
 router.patch("/users/me", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["name", "email", "password", "gender"];
+  const allowedUpdates = ["password","gender","fastName","lastName"];
   const isValidOperation = updates.every((update) =>
     allowedUpdates.includes(update)
   );

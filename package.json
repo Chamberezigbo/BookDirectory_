@@ -4,7 +4,7 @@
   "description": "a book directory project for book community",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "dev": "nodemon index.js"
   },
   "author": "chamberlain",

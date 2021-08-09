@@ -4,7 +4,7 @@ const sendEmail = require('../utils/sendEmail');
 const crypto = require('crypto');
 const express = require("express");
 const router = express.Router();
-
+require('dotenv').config()
 router.post("/api/password-reset", async (req, res) => {
     try {
 
