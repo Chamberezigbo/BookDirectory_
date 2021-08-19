@@ -1,6 +1,6 @@
 # Book Directory
 
-> This is simple Api for books
+> This is a simple API for books
 
 ## create users
 
@@ -84,6 +84,7 @@ Response
 
 **METHOD:** `POST`
 **PARAMETER:**
+
 > you don't need a parameter
 
 Response
@@ -136,11 +137,11 @@ Response
 
 ```
 
-## Thats all for user next will be router for books
+## That's all for the user next will be a router for books
 
-## Create book
+## Create a book
 
-> this router create book for the particular user authenticated with it
+> this router create a book for the particular user authenticated with it
 
 **ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books>
 
@@ -171,16 +172,15 @@ Response
 
 ```
 
-## Get book by id
+## Get a book by id
 
-> this route generate book by id
+> this route generate a book by id
 
 **ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books/:id>
 
 **METHOD:** `GET`
 **PARAMETER:**
 `None`
-
 
 Response
 
@@ -241,7 +241,7 @@ Response
 
 ## Publics users router
 
-> this is for public route to generate book by title or author
+> this is for the public route to generate a book by title or author
 
 **ENDPOINT:** <https://secret-woodland-98197.herokuapp.com/books-title-author>
 
